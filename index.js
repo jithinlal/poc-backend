@@ -15,6 +15,7 @@ let client = new sdk.Client();
 
 const winston = require('./config/winston');
 const fileRoute = require('./Routes/file.route');
+const indexRoute = require('./Routes/index.route');
 
 // mongoose
 // 	.connect(`${process.env.MONGO}`, {
@@ -75,6 +76,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use('/api', fileRoute);
+app.use('/index', indexRoute);
 
 app.use((err, req, res, _next) => {
 	let { status, statusCode, message, expired = false, forbidden = false } = err;

@@ -56,13 +56,12 @@ module.exports = {
 	},
 	files: async (req, res) => {
 		try {
-			console.log({ jwt: req.jwt });
 			client.setJWT(req.jwt).setSelfSigned();
 
 			const folder = req.params.folder;
-			console.log({ folder });
+
 			const files = await storage.listFiles(folder);
-			console.log({ files });
+
 			const formattedFiles = files.files.map((file) => {
 				return {
 					...file,

@@ -23,27 +23,28 @@ module.exports = {
 					payload: {},
 				});
 			} else {
-				let file = req.files.file;
-				file.mv(`./uploads/${folderName}/${folderName}_${file.name}`);
-
 				const userId = req.currentUser.$id;
+				let file = req.files.file;
+				file.mv(`./uploads/${folderName}/${folderName}${userId}__${file.name}`);
 
 				const response = await storage.createFile(
 					'unique()',
 					fs.createReadStream(
-						`./uploads/${folderName}/${folderName}_${file.name}`,
+						`./uploads/${folderName}/${folderName}${userId}__${file.name}`,
 					),
 					[`user:${userId}`],
 				);
 
-				fs.unlinkSync(`./uploads/${folderName}/${folderName}_${file.name}`);
+				fs.unlinkSync(
+					`./uploads/${folderName}/${folderName}${userId}__${file.name}`,
+				);
 
 				res.send({
 					status: true,
 					message: 'File was uploaded successfully',
 					payload: {
 						...response,
-						name: response.name.slice(response.name.indexOf('_') + 1),
+						name: response.name.slice(response.name.indexOf('__') + 1),
 					},
 				});
 			}
@@ -59,15 +60,20 @@ module.exports = {
 	files: async (req, res) => {
 		try {
 			client.setJWT(req.jwt).setSelfSigned();
+			const userId = req.currentUser.$id;
 
 			const folder = req.params.folder;
 
 			const files = await storage.listFiles(folder);
 
-			const formattedFiles = files.files.map((file) => {
+			const formattedFiles = files.files.filter((file) =>
+				file.name.includes(userId),
+			);
+
+			formattedFiles = formattedFiles.map((file) => {
 				return {
 					...file,
-					name: file.name.slice(file.name.indexOf('_') + 1),
+					name: file.name.slice(file.name.indexOf('__') + 1),
 				};
 			});
 

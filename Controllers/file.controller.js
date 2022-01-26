@@ -32,7 +32,7 @@ module.exports = {
 					fs.createReadStream(
 						`./uploads/${folderName}/${folderName}${userId}__${file.name}`,
 					),
-					[`user:${userId}`],
+					[`role:all`],
 				);
 
 				fs.unlinkSync(

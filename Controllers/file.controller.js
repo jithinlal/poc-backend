@@ -44,7 +44,7 @@ module.exports = {
 					message: 'File was uploaded successfully',
 					payload: {
 						...response,
-						name: response.name.slice(response.name.indexOf('__') + 1),
+						name: response.name.slice(response.name.indexOf('__') + 2),
 					},
 				});
 			}
@@ -73,7 +73,7 @@ module.exports = {
 			formattedFiles = formattedFiles.map((file) => {
 				return {
 					...file,
-					name: file.name.slice(file.name.indexOf('__') + 1),
+					name: file.name.slice(file.name.indexOf('__') + 2),
 				};
 			});
 

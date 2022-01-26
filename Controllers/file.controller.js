@@ -50,8 +50,10 @@ module.exports = {
 			}
 		} catch (error) {
 			console.log(error);
-			res.status(500).json({
-				message: 'Server error',
+			res.status(500).send({
+				status: false,
+				message: 'Unexpected problem',
+				payload: {},
 			});
 		}
 	},

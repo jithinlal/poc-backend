@@ -66,7 +66,7 @@ module.exports = {
 
 			const files = await storage.listFiles(folder);
 
-			const formattedFiles = files.files.filter((file) =>
+			let formattedFiles = files.files.filter((file) =>
 				file.name.includes(userId),
 			);
 
